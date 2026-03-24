@@ -4,7 +4,7 @@ use crate::{
     models::{Claims, CreateUrlRequest, UrlResponse},
     services::redis,
     state::AppState,
-    handlers::analytics
+    handlers::analytics::router as analytics_router,
 };
 use axum::{
     extract::{Extension, Path, State},
@@ -18,17 +18,18 @@ use sqlx::Row;
 use tokio::task;
 
 pub fn router(state: AppState) -> Router<AppState> {
-    let api_router = Router::new()
+    Router::new()
         .route("/", get(list_urls))
         .route("/", post(create_url))
         .route("/{id}", get(get_url))
         .route("/{id}", delete(delete_url))
-        .merge(analytics::router())
-        .layer(axum::middleware::from_fn_with_state(state.clone(), auth_middleware));
+        .merge(analytics_router())
+        .layer(axum::middleware::from_fn_with_state(state.clone(), auth_middleware))
+}
 
+pub fn redirect_router() -> Router<AppState> {
     Router::new()
         .route("/s/{short_code}", get(redirect_url))
-        .merge(api_router)
 }
 
 async fn list_urls(

@@ -6,12 +6,13 @@ mod services;
 mod state;
 
 use middleware::rate_limit_middleware;
-use handlers::{api_keys_router, auth_router, teams_router, urls_router};
+use handlers::{api_keys_router, auth_router, teams_router, urls_router, redirect_router};
 use services::redis::RedisService;
 use sqlx::postgres::PgPoolOptions;
 use state::AppState;
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::trace::TraceLayer;
+use tower_http::services::ServeDir;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -54,11 +55,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .allow_headers(Any);
 
     let app = axum::Router::new()
-        .route("/", axum::routing::get(|| async { "URL Shortener API" }))
-        .nest("/auth", auth_router(state.clone()))
+        .merge(redirect_router())
+        .nest("/api/auth", auth_router(state.clone()))
         .nest("/api/urls", urls_router(state.clone()))
         .nest("/api/teams", teams_router(state.clone()))
         .nest("/api/api-keys", api_keys_router(state.clone()))
+        .fallback_service(ServeDir::new("public"))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
         .layer(axum::middleware::from_fn_with_state(state.clone(), rate_limit_middleware))

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkShort - URL Shortener</title>
+    <link rel="icon" type="image/png" href="images/image.png">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">LinkShort</div>
+            <nav id="nav">
+                <a href="#" id="nav-dashboard" class="nav-link" style="display: none;">Dashboard</a>
+                <a href="#" id="nav-logout" class="nav-link" style="display: none;">Logout</a>
+                <a href="#" id="nav-login" class="nav-link">Login</a>
+                <a href="#" id="nav-register" class="nav-link">Register</a>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Auth View -->
+            <div id="auth-view" class="view">
+                <div class="auth-container">
+                    <div class="auth-box">
+                        <div class="tabs">
+                            <button class="tab active" data-tab="login">Login</button>
+                            <button class="tab" data-tab="register">Register</button>
+                        </div>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" required placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" required placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <div class="error" id="login-error"></div>
+                        </form>
+
+                        <form id="register-form" class="auth-form" style="display: none;">
+                            <div class="form-group">
+                                <label for="register-email">Email</label>
+                                <input type="email" id="register-email" required placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" id="register-password" required minlength="6" placeholder="Min 6 characters">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                            <div class="error" id="register-error"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view" style="display: none;">
+                <div class="dashboard">
+                    <h1>Your Links</h1>
+                    
+                    <div class="create-url-box">
+                        <h2>Create New Link</h2>
+                        <form id="create-url-form">
+                            <div class="form-row">
+                                <input type="url" id="original-url" required placeholder="https://example.com/very/long/url">
+                                <input type="text" id="short-code" placeholder="Custom code (optional)">
+                                <button type="submit" class="btn btn-primary">Shorten</button>
+                            </div>
+                            <div class="error" id="create-url-error"></div>
+                        </form>
+                    </div>
+
+                    <div class="urls-list" id="urls-list">
+                        <div class="loading">Loading your links...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 LinkShort. URL Shortening Service.</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="/app.js"></script>
+</body>
+</html>

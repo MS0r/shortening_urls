@@ -13,7 +13,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 sqlx = { version = "0.8", features = ["runtime-tokio", "postgres", "uuid", "chrono", "derive"] }
 tower = "0.5"
-tower-http = { version = "0.6", features = ["cors", "trace"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "fs"] }
 
 jsonwebtoken = "9"
 argon2 = "0.5"
